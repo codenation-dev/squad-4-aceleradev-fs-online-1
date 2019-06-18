@@ -1,6 +1,8 @@
 package user
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type SqliteRepo struct {
 	db *sql.DB
@@ -43,6 +45,30 @@ func (r *SqliteRepo) Update(usuario *User) error {
 	}
 
 	return nil
+}
+
+func (r *SqliteRepo) FindUserToAlert() ([]string, error) {
+	sqlUser := "SELECT email FROM user WHERE receivealert= 1"
+
+	emails := make([]string, 0)
+	rows, err := r.db.Query(sqlUser)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var  email string
+		err := rows.Scan(&email)
+		if err != nil {
+			return nil, err
+		}
+		emails = append(emails, email)
+	}
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return emails, nil
 }
 
 func NewSqliteRepo(db *sql.DB) *SqliteRepo {

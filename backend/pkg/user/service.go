@@ -121,6 +121,10 @@ func ValidatePassword(password string) error {
 	return errors.New(messages.ErrInvalidPassword)
 }
 
+func (r *UserService) FindUserToAlert() ([]string, error) {
+	return r.UserRepo.FindUserToAlert()
+}
+
 
 func NewUserService(repo Repository) *UserService{
 	return &UserService{

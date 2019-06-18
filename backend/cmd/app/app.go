@@ -24,7 +24,7 @@ func Init() {
 
 	//Serviços
 	userService := user.NewUserService(userRepo)
-	servantService := servant.NewServantService(servantRepo)
+	servantService := servant.NewServantService(servantRepo, userService)
 
 	//Rotas
 	loginRoute := handler.NewLoginRoute(userService)

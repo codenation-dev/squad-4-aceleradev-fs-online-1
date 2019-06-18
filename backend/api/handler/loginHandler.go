@@ -17,6 +17,7 @@ func TokenAuthMIddleware() gin.HandlerFunc {
 		tokenCookie := c.GetHeader("token")
 		if tokenCookie == "" {
 			c.JSON(http.StatusUnauthorized, "Not Allowed")
+			c.Abort()
 			return
 		}
 
@@ -28,15 +29,18 @@ func TokenAuthMIddleware() gin.HandlerFunc {
 
 		if !jwtToken.Valid {
 			c.JSON(http.StatusUnauthorized, "Not Allowed")
+			c.Abort()
 			return
 		}
 
 		if err != nil {
 			if err == jwt.ErrSignatureInvalid {
 				c.JSON(http.StatusBadRequest, "Not Allowed")
+				c.Abort()
 				return
 			}
 			c.JSON(http.StatusBadRequest, "Not Allowed")
+			c.Abort()
 			return
 		}
 		c.Next()

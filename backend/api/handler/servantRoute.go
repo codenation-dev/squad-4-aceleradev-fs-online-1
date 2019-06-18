@@ -1,8 +1,10 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
 	"github.com/codenation-dev/squad-4-aceleradev-fs-online-1/backend/pkg/servant"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type ServantRoute struct {
@@ -12,12 +14,31 @@ type ServantRoute struct {
 func (h *ServantRoute) BuildRoutes(router *gin.RouterGroup) {
 	group := router.Group("/v1/servant")
 	{
-		group.GET("/import", h.importCsvServidores)
+		group.POST("/import", h.importCsvServidores)
 	}
 }
 
 func (h *ServantRoute) importCsvServidores(c *gin.Context) {
-	h.service.ImportarCsvServidores()
+	multiPartFile, err := c.FormFile("file")
+	if err!= nil {
+		fmt.Println(err)
+		c.JSON(http.StatusBadRequest, "Error getting form file: " + err.Error())
+		return
+	}
+
+	file, err := multiPartFile.Open()
+	if err!= nil {
+		fmt.Println(err)
+		c.JSON(http.StatusInternalServerError, "Error openning file: " + err.Error())
+		return
+	}
+
+	err = h.service.ImportarCsvServidores(file)
+	if err!= nil {
+		fmt.Println(err)
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
 }
 
 func NewServantRoute(service *servant.ServantService) *ServantRoute {
