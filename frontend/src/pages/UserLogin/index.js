@@ -10,13 +10,35 @@ export default class Login extends Component {
     password: '',
   };
 
+  handleInputChange = (e) => {
+    const { target } = e;
+    const { value, name } = target;
+
+    this.setState({
+      [name]: value,
+    });
+  };
+
   render() {
+    const { email, password } = this.state;
     return (
       <Container>
         <Form>
           <img src={logo} alt="Logo Banco Uati" />
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Senha" />
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={this.handleInputChange}
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={this.handleInputChange}
+            placeholder="Senha"
+          />
 
           <button type="submit">CRIAR</button>
           <div className="login-options">

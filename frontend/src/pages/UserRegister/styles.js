@@ -20,6 +20,17 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  .form-check {
+    margin-bottom: 0 !important;
+    width: 100%;
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #ff8700;
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+  }
   input {
     width: 100%;
     height: 50px;
@@ -30,6 +41,10 @@ export const Form = styled.form`
     font-weight: bold;
     padding: 0 5px;
     margin-bottom: 10px;
+    &[type='checkbox'] {
+      width: auto;
+      position: none;
+    }
 
     ::placeholder {
       color: #ff8700;

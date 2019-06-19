@@ -30,7 +30,7 @@ const Sidebar = () => (
             <i className="fa fa-history fa-lg" /> Histórico{' '}
             <i className="float-right fa fa-caret-down" />
           </li>
-          <div className="collapse show" id="navbarToggleExternalContent">
+          <div className="collapse" id="navbarToggleExternalContent">
             <div className="bg-dark-blue">
               <ul>
                 <li className="list-group-item list-group-item-action bg-dark-blue">

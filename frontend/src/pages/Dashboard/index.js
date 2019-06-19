@@ -1,26 +1,13 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 
-import {
-  PieChart,
-  Pie,
-  Sector,
-  Cell,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from 'recharts';
 import { Container } from './styles';
 
 import Sidebar from '../../components/Sidebar';
 import Navbar from '../../components/Navbar';
 import InfoCards from '../../components/InfoCards';
+import ChartCards from '../../components/ChartCards';
 
-const data2 = [
+const barsData = [
   {
     name: 'Page A',
     uv: 4000,
@@ -65,7 +52,7 @@ const data2 = [
   },
 ];
 
-const data = [
+const pieData = [
   { name: 'Group A', value: 400 },
   { name: 'Group B', value: 300 },
   { name: 'Group C', value: 300 },
@@ -90,9 +77,12 @@ const renderCustomizedLabel = ({
 };
 
 export default class Dashboard extends Component {
-  state = {};
+  state = {
+    dataDidLoaded: true,
+  };
 
   render() {
+    const { dataDidLoaded } = this.state;
     return (
       <Container>
         <div className="d-flex" id="wrapper">
@@ -101,73 +91,41 @@ export default class Dashboard extends Component {
             <Navbar />
             <div className="container-fluid">
               <div className="card mt-4 p-4 ">
-                <div className="row justify-content-between mr-4 ml-4">
+                <div className="row justify-content-between mr-5 ml-5">
                   <h3>Dashboard</h3>
                   <button className="btn btn-dark bg-dark-blue float-right">
-                    Importar arquivo
+                    <i className="fa fa-upload" /> Importar arquivo
                   </button>
                 </div>
                 <div className="analitycs-cards row mt-4 mb-4">
-                  <InfoCards />
-                  <InfoCards />
-                  <InfoCards />
+                  <InfoCards
+                    cardTitle="Número de alertas"
+                    value={35}
+                    type="fa fa-bell fa-lg"
+                    loaded={dataDidLoaded}
+                  />
+                  <InfoCards
+                    cardTitle="Emails enviados"
+                    value={35}
+                    type="fa fa-envelope fa-lg"
+                    loaded={dataDidLoaded}
+                  />
+                  <InfoCards
+                    cardTitle="Clientes analisados"
+                    value={100}
+                    type="fa fa-line-chart fa-lg"
+                    loaded={dataDidLoaded}
+                  />
                 </div>
-                <div className="analitycs-cards row mt-4 mb-4">
-                  <div className="card  text-white bg-dark-blue mb-3 text-center col-sm-5 ">
-                    <div className="card-header">
-                      <h5 className="card-title">Special title treatment</h5>
-                    </div>
-                    <div className="card-body chart-card-content justify-content-center">
-                      <ResponsiveContainer>
-                        <PieChart width={400} height={400}>
-                          <Pie
-                            data={data}
-                            cx={250}
-                            cy={120}
-                            labelLine={false}
-                            label={renderCustomizedLabel}
-                            outerRadius={120}
-                            fill="#8884d8"
-                            dataKey="value"
-                          >
-                            {data.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                          </Pie>
-                          <Legend />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-                  <div className="card  text-white bg-dark-blue mb-3 text-center col-sm-5 ">
-                    <div className="card-header">
-                      <h5 className="card-title">Special title treatment</h5>
-                    </div>
-                    <div className="card-body">
-                      <ResponsiveContainer>
-                        <BarChart
-                          width={500}
-                          height={300}
-                          data={data2}
-                          margin={{
-                            top: 5,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="name" />
-                          <YAxis />
-                          <Tooltip />
-                          <Legend />
-                          <Bar dataKey="pv" fill="#8884d8" />
-                          <Bar dataKey="uv" fill="#82ca9d" />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-                </div>
+                <ChartCards
+                  pieTitle="Título 1"
+                  barTitle="Título 2"
+                  pieData={pieData}
+                  barsData={barsData}
+                  renderCustomizedLabel={renderCustomizedLabel}
+                  colors={COLORS}
+                  loaded={dataDidLoaded}
+                />
               </div>
             </div>
           </div>
