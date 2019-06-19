@@ -9,10 +9,13 @@ const GlobalStyle = createGlobalStyle`
   }
   body{
     height: 100%;
-    background: #FF8700;
+    background: #FF8700 !important;
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
     font-family: sans-serif;
+  }
+  .bg-dark-blue{
+    background-color: #2B2D3D !important;
   }
 `;
 
