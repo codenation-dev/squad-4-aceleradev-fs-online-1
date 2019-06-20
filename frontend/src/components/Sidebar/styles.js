@@ -9,6 +9,10 @@ export const Container = styled.div`
     -o-transition: margin 0.25s ease-out;
     transition: margin 0.25s ease-out;
     background-color: #2b2d3d;
+    height: 100vh;
+    a {
+      text-decoration: none;
+    }
   }
 
   #sidebar-wrapper .sidebar-heading {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Container } from './styles';
 import logo from '../../assets/logo190x33.svg';
@@ -15,9 +16,12 @@ const Sidebar = () => (
           <li className="greeting-item list-group-item list-group-item-action bg-dark-blue">
             <i className="fa fa-user-circle fa-lg" /> Olá, Henrique
           </li>
-          <li className="list-group-item list-group-item-action bg-dark-blue">
-            <i className="fa fa-bar-chart fa-lg" /> Dashboard
-          </li>
+          <Link to="/">
+            <li className="list-group-item list-group-item-action bg-dark-blue">
+              <i className="fa fa-bar-chart fa-lg" /> Dashboard
+            </li>
+          </Link>
+
           <li
             className=" navbar-toggler list-group-item list-group-item-action bg-dark-blue"
             data-toggle="collapse"
@@ -27,21 +31,34 @@ const Sidebar = () => (
             aria-label="Toggle navigation"
           >
             {' '}
-            <i className="fa fa-history fa-lg" /> Histórico{' '}
+            <i className="fa fa-bell fa-lg" /> Alertas{' '}
             <i className="float-right fa fa-caret-down" />
           </li>
           <div className="collapse" id="navbarToggleExternalContent">
             <div className="bg-dark-blue">
               <ul>
-                <li className="list-group-item list-group-item-action bg-dark-blue">
-                  <i className="fa fa-envelope fa-lg" /> Emails
-                </li>
-                <li className="list-group-item list-group-item-action bg-dark-blue">
-                  <i className="fa fa-bell fa-lg" /> Alertas
-                </li>
+                <Link to="/alerts">
+                  <li className="list-group-item list-group-item-action bg-dark-blue">
+                    <i className="fa fa-exclamation-circle fa-lg" /> Meus alertas
+                  </li>
+                </Link>
+
+                <Link to="/history/alerts">
+                  <li className="list-group-item list-group-item-action bg-dark-blue">
+                    <i className="fa fa-history fa-lg" /> Histórico
+                  </li>
+                </Link>
               </ul>
             </div>
           </div>
+          <Link to="/upload">
+            <li className="list-group-item list-group-item-action bg-dark-blue">
+              <i className="fa fa-upload" /> Importar arquivo
+            </li>
+          </Link>
+          <li className="list-group-item list-group-item-action bg-dark-blue">
+            <i className="fa fa-lock fa-lg" /> Administrativo
+          </li>
 
           <li className="list-group-item list-group-item-action bg-dark-blue">
             <i className="fa fa-sign-out fa-lg" /> Sair

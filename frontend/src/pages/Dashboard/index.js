@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Container } from './styles';
 
@@ -7,59 +8,47 @@ import Navbar from '../../components/Navbar';
 import InfoCards from '../../components/InfoCards';
 import ChartCards from '../../components/ChartCards';
 
-const barsData = [
+const lineData = [
   {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    name: '0-2500',
+    Clientes: 3,
   },
   {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    name: '2500-5000',
+    Clientes: 3,
   },
   {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    name: '5000-7500',
+    Clientes: 2,
   },
   {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
+    name: '7500-10000',
+    Clientes: 2,
   },
   {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
+    name: '10000-12500',
+    Clientes: 1,
   },
   {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
+    name: '12500-15000',
+    Clientes: 1,
   },
   {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
+    name: '15000-20000',
+    Clientes: 2,
+  },
+  {
+    name: '20000+',
+    Clientes: 3,
   },
 ];
 
 const pieData = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
+  { name: 'Potenciais clientes', value: 400 },
+  { name: 'Clientes remanescentes', value: 300 },
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#FFBB28', '#00C49F', '#FF8042'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -76,7 +65,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
   state = {
     dataDidLoaded: true,
   };
@@ -93,9 +82,11 @@ export default class Dashboard extends Component {
               <div className="card mt-4 p-4 ">
                 <div className="row justify-content-between mr-5 ml-5">
                   <h3>Dashboard</h3>
-                  <button className="btn btn-dark bg-dark-blue float-right">
-                    <i className="fa fa-upload" /> Importar arquivo
-                  </button>
+                  <Link to="/upload">
+                    <button className="btn btn-dark bg-dark-blue float-right">
+                      <i className="fa fa-upload" /> Importar arquivo
+                    </button>
+                  </Link>
                 </div>
                 <div className="analitycs-cards row mt-4 mb-4">
                   <InfoCards
@@ -118,10 +109,10 @@ export default class Dashboard extends Component {
                   />
                 </div>
                 <ChartCards
-                  pieTitle="Título 1"
-                  barTitle="Título 2"
+                  pieTitle="Distribuição geral de potenciais clientes"
+                  barTitle="Faixa salarial (Salário x Clientes)"
                   pieData={pieData}
-                  barsData={barsData}
+                  lineData={lineData}
                   renderCustomizedLabel={renderCustomizedLabel}
                   colors={COLORS}
                   loaded={dataDidLoaded}
@@ -134,3 +125,4 @@ export default class Dashboard extends Component {
     );
   }
 }
+export default Dashboard;

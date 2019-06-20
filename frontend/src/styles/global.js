@@ -17,6 +17,9 @@ const GlobalStyle = createGlobalStyle`
   .bg-dark-blue{
     background-color: #2B2D3D !important;
   }
+  .main-content{
+    min-height: 87vh;
+  }
 `;
 
 export default GlobalStyle;
