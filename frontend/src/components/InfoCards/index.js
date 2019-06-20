@@ -32,7 +32,7 @@ const InfoCards = ({
       <div className="card-footer">
         <p>
           <i className="fa fa-clock-o mr-2" />
-          Última importação
+          Até a última importação
         </p>
       </div>
     </Container>

@@ -6,8 +6,8 @@ import {
   Pie,
   Cell,
   ResponsiveContainer,
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -19,7 +19,7 @@ const ChartCards = ({
   barTitle,
   pieTitle,
   pieData,
-  barsData,
+  lineData,
   renderCustomizedLabel,
   colors,
   loaded,
@@ -53,7 +53,7 @@ const ChartCards = ({
         ) : (
           <div className="justify-content-center">
             <h1>Sem resultados</h1>
-            <span>Importe um arquivo .csv para que a análise dos dados possam ser feitas.</span>
+            <span>Importe um arquivo .csv para que a análise dos dados possa ser feita.</span>
             <Link to="/upload">
               <button className="btn btn-dark bg-light text-dark mt-4">
                 <i className="fa fa-upload" /> Importar arquivo
@@ -70,10 +70,10 @@ const ChartCards = ({
       <div className="card-body">
         {loaded ? (
           <ResponsiveContainer>
-            <BarChart
+            <LineChart
               width={500}
               height={300}
-              data={barsData}
+              data={lineData}
               margin={{
                 top: 5,
                 right: 30,
@@ -82,18 +82,17 @@ const ChartCards = ({
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
+              <XAxis dataKey="name" unit="R$" />
+              <YAxis type="number" />
               <Tooltip />
               <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
-              <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
+              <Line type="monotone" dataKey="Clientes" stroke="#82ca9d" />
+            </LineChart>
           </ResponsiveContainer>
         ) : (
           <div className="justify-content-center">
             <h1>Sem resultados</h1>
-            <span>Importe um arquivo .csv para que a análise dos dados possam ser feitas.</span>
+            <span>Importe um arquivo .csv para que a análise dos dados possa ser feita.</span>
             <Link to="/upload">
               <button className="btn btn-dark bg-light text-dark mt-4">
                 <i className="fa fa-upload" /> Importar arquivo
@@ -110,7 +109,7 @@ ChartCards.propTypes = {
   barTitle: PropTypes.string.isRequired,
   pieTitle: PropTypes.string.isRequired,
   pieData: PropTypes.array.isRequired,
-  barsData: PropTypes.array.isRequired,
+  lineData: PropTypes.array.isRequired,
   renderCustomizedLabel: PropTypes.func.isRequired,
   colors: PropTypes.array.isRequired,
   loaded: PropTypes.bool.isRequired,

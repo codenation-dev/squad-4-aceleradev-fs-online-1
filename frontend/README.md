@@ -11,3 +11,4 @@
 1. Tela de login: <a href="http://localhost:3000/user/login">http://localhost:3000/user/login</a>
 2. Tela de registro: <a href="http://localhost:3000/user/register">http://localhost:3000/user/register</a>
 3. Dashboard: <a href="http://localhost:3000/">http://localhost:3000/</a>
+4. Tela para importar CSV: <a href="http://localhost:3000/upload">http://localhost:3000/upload</a>
