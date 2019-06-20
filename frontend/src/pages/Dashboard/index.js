@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Container } from './styles';
 
@@ -76,9 +77,9 @@ const renderCustomizedLabel = ({
   );
 };
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
   state = {
-    dataDidLoaded: true,
+    dataDidLoaded: false,
   };
 
   render() {
@@ -93,9 +94,11 @@ export default class Dashboard extends Component {
               <div className="card mt-4 p-4 ">
                 <div className="row justify-content-between mr-5 ml-5">
                   <h3>Dashboard</h3>
-                  <button className="btn btn-dark bg-dark-blue float-right">
-                    <i className="fa fa-upload" /> Importar arquivo
-                  </button>
+                  <Link to="/upload">
+                    <button className="btn btn-dark bg-dark-blue float-right">
+                      <i className="fa fa-upload" /> Importar arquivo
+                    </button>
+                  </Link>
                 </div>
                 <div className="analitycs-cards row mt-4 mb-4">
                   <InfoCards
@@ -134,3 +137,4 @@ export default class Dashboard extends Component {
     );
   }
 }
+export default Dashboard;

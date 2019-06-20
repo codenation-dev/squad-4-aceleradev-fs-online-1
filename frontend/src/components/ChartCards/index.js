@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   PieChart,
@@ -53,9 +54,11 @@ const ChartCards = ({
           <div className="justify-content-center">
             <h1>Sem resultados</h1>
             <span>Importe um arquivo .csv para que a análise dos dados possam ser feitas.</span>
-            <button className="btn btn-dark bg-light text-dark mt-4">
-              <i className="fa fa-upload" /> Importar arquivo
-            </button>
+            <Link to="/upload">
+              <button className="btn btn-dark bg-light text-dark mt-4">
+                <i className="fa fa-upload" /> Importar arquivo
+              </button>
+            </Link>
           </div>
         )}
       </div>
@@ -91,9 +94,11 @@ const ChartCards = ({
           <div className="justify-content-center">
             <h1>Sem resultados</h1>
             <span>Importe um arquivo .csv para que a análise dos dados possam ser feitas.</span>
-            <button className="btn btn-dark bg-light text-dark mt-4">
-              <i className="fa fa-upload" /> Importar arquivo
-            </button>
+            <Link to="/upload">
+              <button className="btn btn-dark bg-light text-dark mt-4">
+                <i className="fa fa-upload" /> Importar arquivo
+              </button>
+            </Link>
           </div>
         )}
       </div>
