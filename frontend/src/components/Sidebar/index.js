@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Container } from './styles';
 import logo from '../../assets/logo190x33.svg';
@@ -15,9 +16,12 @@ const Sidebar = () => (
           <li className="greeting-item list-group-item list-group-item-action bg-dark-blue">
             <i className="fa fa-user-circle fa-lg" /> Olá, Henrique
           </li>
-          <li className="list-group-item list-group-item-action bg-dark-blue">
-            <i className="fa fa-bar-chart fa-lg" /> Dashboard
-          </li>
+          <Link to="/">
+            <li className="list-group-item list-group-item-action bg-dark-blue">
+              <i className="fa fa-bar-chart fa-lg" /> Dashboard
+            </li>
+          </Link>
+
           <li
             className=" navbar-toggler list-group-item list-group-item-action bg-dark-blue"
             data-toggle="collapse"
@@ -42,6 +46,11 @@ const Sidebar = () => (
               </ul>
             </div>
           </div>
+          <Link to="/upload">
+            <li className="list-group-item list-group-item-action bg-dark-blue">
+              <i className="fa fa-upload" /> Importar arquivo
+            </li>
+          </Link>
 
           <li className="list-group-item list-group-item-action bg-dark-blue">
             <i className="fa fa-sign-out fa-lg" /> Sair
