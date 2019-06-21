@@ -2,10 +2,13 @@ import React from 'react';
 
 import { AlertContainer } from './styles';
 
-const AlertBox = () => (
+const AlertBox = ({
+  data, hour, userDestination, emailDestination, clientName,
+}) => (
   <AlertContainer>
     <div className=" alert alert-primary" role="alert">
-      Novo alerta emitido para <b>Francisco</b>. <b>Henrique Augusto</b> é um potencial cliente!
+      Novo alerta emitido para <b>Francisco Vieira</b>. Detectamos <b>Henrique Augusto</b> como um
+      potencial cliente!
       <div className="collapse" id="alert1">
         <ul>
           <li className="list-group-item list-group-item-action ">
