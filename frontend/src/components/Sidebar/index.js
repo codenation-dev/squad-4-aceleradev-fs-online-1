@@ -56,9 +56,11 @@ const Sidebar = () => (
               <i className="fa fa-upload" /> Importar arquivo
             </li>
           </Link>
-          <li className="list-group-item list-group-item-action bg-dark-blue">
-            <i className="fa fa-lock fa-lg" /> Administrativo
-          </li>
+          <Link to="/user/administrative">
+            <li className="list-group-item list-group-item-action bg-dark-blue">
+              <i className="fa fa-lock fa-lg" /> Administrativo
+            </li>
+          </Link>
 
           <li className="list-group-item list-group-item-action bg-dark-blue">
             <i className="fa fa-sign-out fa-lg" /> Sair
