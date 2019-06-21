@@ -1,4 +1,5 @@
 import React from 'react';
+import { logout, getUser } from '../../services/loginService';
 
 import { Container } from './styles';
 
@@ -33,13 +34,13 @@ const Navbar = () => (
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <i className="fa fa-user-circle fa-lg text-white" /> Henrique Augusto
+              <i className="fa fa-user-circle fa-lg text-white" /> {getUser()}
             </a>
             <div
               className="dropdown-menu dropdown-menu-right bg-dark-blue"
               aria-labelledby="navbarDropdown"
             >
-              <a className="dropdown-item bg-dark-blue text-white" href="/user/login">
+              <a className="dropdown-item bg-dark-blue text-white" href="/user/login" onClick={logout}>
                 <i className="fa fa-sign-out fa-lg" /> Sair
               </a>
             </div>

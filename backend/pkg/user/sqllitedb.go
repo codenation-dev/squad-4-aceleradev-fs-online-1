@@ -21,6 +21,19 @@ func (r *SqliteRepo) FindByUsername(username string) (*User, error) {
 	return &user, nil
 }
 
+func (r *SqliteRepo) FindByEmail(email string) (*User, error) {
+	sqlUser := "SELECT username, password, email, nome FROM user WHERE email=$1"
+
+	user := User{}
+	rows := r.db.QueryRow(sqlUser, email)
+	err := rows.Scan(&user.Username, &user.Password, &user.Email, &user.Nome)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func (r *SqliteRepo) Save(usuario *User) error {
 	sqlUser := "INSERT INTO user (username, password, email, nome, receivealert, isAdmin) VALUES ($1, $2, $3, $4, $5, $6)"
 

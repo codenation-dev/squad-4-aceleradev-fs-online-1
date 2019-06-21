@@ -7,7 +7,6 @@ import (
 	"github.com/codenation-dev/squad-4-aceleradev-fs-online-1/backend/pkg/servant"
 	"github.com/codenation-dev/squad-4-aceleradev-fs-online-1/backend/pkg/user"
 	"github.com/gin-gonic/gin"
-	"github.com/robfig/cron"
 	"log"
 	"os"
 )
@@ -37,6 +36,7 @@ func Init() {
 	alertRoute := handler.NewAlertRoute(alertService)
 
 	r := gin.Default()
+	r.Use(handler.CorsMiddleware())
 	r.Use(handler.TokenAuthMIddleware())
 	mainRouter := r.Group("/banco-uati")
 	loginRoute.BuildRoutes(mainRouter)
@@ -44,9 +44,9 @@ func Init() {
 	servantRoute.BuildRoutes(mainRouter)
 	alertRoute.BuildRoutes(mainRouter)
 
-	crono := cron.New()
+	/*crono := cron.New()
 	crono.AddFunc("@every 5m", servantService.VerifyPotentialClients)
-	crono.Start()
+	crono.Start()*/
 
 	err = r.Run(env.AppBaseUrl())
 	if err != nil {

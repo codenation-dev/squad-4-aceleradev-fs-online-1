@@ -13,7 +13,7 @@ type User struct {
 }
 
 type Credentials struct {
-	Username string `json:"username"`
+	Email string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -21,4 +21,10 @@ type Credentials struct {
 type Claims struct {
 	Username string `json:"username"`
 	jwt.StandardClaims
+}
+
+
+type LoginResponse struct {
+	Username 	string `json:"username"`
+	Jwt 		string `json:"token"`
 }

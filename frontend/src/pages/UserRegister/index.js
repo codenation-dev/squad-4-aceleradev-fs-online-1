@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { register } from '../../services/loginService';
 
 import { Container, Form } from './styles';
 import logo from '../../assets/logo.svg';
@@ -10,7 +11,6 @@ export default class Register extends Component {
     username: '',
     email: '',
     password: '',
-    isAdmin: false,
   };
 
   handleInputChange = (e) => {
@@ -23,13 +23,25 @@ export default class Register extends Component {
     });
   };
 
+  handleRegister = (e) => {
+    e.preventDefault();
+    const {
+      username, name, email, password,
+    } = this.state;
+    register(username, name, email, password).then((response) => {
+      this.props.history.push('/user/login');
+    }).catch((error) => {
+      alert('Ocorreu um erro ao cadastrar o usuário');
+    });
+  }
+
   render() {
     const {
-      name, username, email, password, isAdmin,
+      name, username, email, password,
     } = this.state;
     return (
       <Container>
-        <Form>
+        <Form onSubmit={this.handleRegister}>
           <img src={logo} alt="Logo Banco Uati" />
           <input
             type="text"
@@ -59,19 +71,6 @@ export default class Register extends Component {
             placeholder="Senha"
             onChange={this.handleInputChange}
           />
-          <div className="form-group form-check">
-            <input
-              value={isAdmin}
-              name="isAdmin"
-              onChange={this.handleInputChange}
-              type="checkbox"
-              className="form-check-input"
-              id="exampleCheck1"
-            />
-            <label className="form-check-label" htmlFor="exampleCheck1">
-              Criar conta de administrador
-            </label>
-          </div>
 
           <button type="submit">CADASTRAR</button>
           <div className="register-options">

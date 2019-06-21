@@ -36,6 +36,11 @@ export const Form = styled.form`
       font-size: 15px;
     }
   }
+  span {
+    color: #ff8700;
+    font-weight: bold;
+    font-size: 15px;
+  }
   button {
     height: 47px;
     width: 270px;

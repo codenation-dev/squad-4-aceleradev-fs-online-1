@@ -10,7 +10,7 @@ import (
 
 func TokenAuthMIddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if strings.Contains(c.Request.URL.String(), "signin") {
+		if strings.Contains(c.Request.URL.String(), "login") {
 			c.Next()
 			return
 		}

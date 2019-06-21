@@ -6,4 +6,5 @@ type Repository interface {
 	Update(usuario *User) error
 	FindUserToAlert() ([]User, error)
 	FindUser(user User) ([]User, error)
+	FindByEmail(email string) (*User, error)
 }

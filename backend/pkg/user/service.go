@@ -1,6 +1,7 @@
 package user
 
 import (
+	"database/sql"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/codenation-dev/squad-4-aceleradev-fs-online-1/backend/pkg/messages"
@@ -13,7 +14,7 @@ import (
 var JwtKey = []byte("banco-uati")
 
 type Service interface {
-	SignIn(credentials Credentials) (string, error)
+	SignIn(credentials Credentials) (*LoginResponse, error)
 	ValidateUsername(username string) error
 	SaveUser(*User) error
 	FindUserToAlert() ([]User, error)
@@ -24,16 +25,19 @@ type UserService struct {
 	UserRepo Repository
 }
 
-func (s *UserService) SignIn(credentials Credentials) (string, error) {
-	user, err := s.UserRepo.FindByUsername(credentials.Username)
+func (s *UserService) SignIn(credentials Credentials) (*LoginResponse, error) {
+	user, err := s.UserRepo.FindByEmail(credentials.Email)
 	if err != nil {
-		return "", err
+		if err.Error() == sql.ErrNoRows.Error() {
+			return nil, errors.New("Not authorized")
+		}
+		return nil, err
 	}
 
 	encryptPassword := util.EncriptToSha1([]byte(credentials.Password))
 
 	if encryptPassword != user.Password {
-		return "", errors.New("Not authorized")
+		return nil, errors.New("Not authorized")
 	}
 
 	expirationTime := time.Now().Add(1 * time.Hour)
@@ -49,10 +53,11 @@ func (s *UserService) SignIn(credentials Credentials) (string, error) {
 
 	tokenString, err := token.SignedString(JwtKey)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return tokenString, nil
+	response := &LoginResponse{Username: user.Nome, Jwt: tokenString}
+	return response, nil
 }
 
 func (s *UserService) SaveUser(usuario *User) error {
