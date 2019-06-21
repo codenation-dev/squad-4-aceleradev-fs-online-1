@@ -7,6 +7,7 @@ import (
 	"encoding/csv"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/chromedp/chromedp"
+	"github.com/codenation-dev/squad-4-aceleradev-fs-online-1/backend/pkg/alert"
 	"github.com/codenation-dev/squad-4-aceleradev-fs-online-1/backend/pkg/email"
 	"github.com/codenation-dev/squad-4-aceleradev-fs-online-1/backend/pkg/user"
 	"io"
@@ -15,15 +16,18 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 type Service interface {
 	ImportarCsvServidores() error
+	VerifyPotentialClients() error
 }
 
 type ServantService struct {
 	servantRepo ServantRepository
 	userService *user.UserService
+	alertService *alert.AlertService
 }
 
 const notifySalary = 20000.00
@@ -42,7 +46,61 @@ func (s *ServantService) createImportCsvWorker(id int, names <-chan string, resu
 	}
 }
 
+func (s *ServantService) readClientCsv (file multipart.File) ([]Client, error) {
+	reader := csv.NewReader(bufio.NewReader(file))
+	clients := make([]Client, 0)
+	for {
+		line, err := reader.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return nil, err
+		}
+		client := Client{Nome: line[0], isPotentialClient: 0}
+		clients = append(clients, client)
+		err = s.servantRepo.InsertClient(client)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return clients, nil
+}
+
 func (s *ServantService) ImportarCsvServidores (file multipart.File) error {
+	clients, err := s.readClientCsv(file)
+	if err != nil {
+		return err
+	}
+
+	err = s.doSearchClients(clients)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *ServantService) VerifyPotentialClients() {
+	log.Println("Iniciando a verificação de clientes potenciais")
+	clients, err := s.servantRepo.getPotentialClients()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	err = s.doSearchClients(clients)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	log.Println("Finalizando a verificação de clientes potenciais")
+
+	return
+}
+
+func (s *ServantService) doSearchClients (clients []Client) error {
 
 	jobs := make(chan string, 5)
 	servants := make(chan Servant, 20000)
@@ -52,19 +110,9 @@ func (s *ServantService) ImportarCsvServidores (file multipart.File) error {
 		go s.createImportCsvWorker(w, jobs, servants, &wg)
 	}
 
-	reader := csv.NewReader(bufio.NewReader(file))
-	for {
-		line, err := reader.Read()
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			return err
-		}
-
-		servantName := line[0]
-		jobs <- servantName
+	for _, client := range clients {
 		wg.Add(1)
+		jobs <- client.Nome
 	}
 
 	wg.Wait()
@@ -75,6 +123,12 @@ func (s *ServantService) ImportarCsvServidores (file multipart.File) error {
 		err := s.servantRepo.InsertServant(servant)
 		if err != nil {
 			return err
+		}
+		if servant.Salario >= notifySalary {
+			err = s.servantRepo.UpdateClient(servant.Nome)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
@@ -158,13 +212,35 @@ func (s *ServantService) sendNotifications(salary float64) error {
 		return nil
 	}
 
-	emails, err := s.userService.FindUserToAlert()
+	users, err := s.userService.FindUserToAlert()
 	if err != nil {
 		return err
 	}
 
-	if len(emails) == 0 {
+	if len(users) == 0 {
 		return nil
+	}
+
+	emails := make([]string, 0)
+	alerts := make([]alert.Alert, 0)
+	now := time.Now()
+	nowString := now.Format("02-01-2006 15:04:05")
+	for _, servant := range servants {
+		err = s.servantRepo.UpdateSendAlert(servant)
+		if err != nil {
+			return err
+		}
+		for _, user := range users {
+			emails = append(emails, user.Email)
+			alert := alert.Alert{
+				UserName: user.Nome,
+				UserEmail: user.Email,
+				ClientName: servant.Nome,
+				ClientSalary: servant.Salario,
+				SendDate: nowString,
+			}
+			alerts = append(alerts, alert)
+		}
 	}
 
 	err = email.SendEmail(emails)
@@ -172,20 +248,16 @@ func (s *ServantService) sendNotifications(salary float64) error {
 		return err
 	}
 
-	for _, servant := range servants {
-		err = s.servantRepo.UpdateSendAlert(servant)
-		if err != nil {
-			return err
-		}
-	}
+	s.alertService.SaveAlerts(alerts)
 
 	return nil
 
 }
 
-func NewServantService(repo ServantRepository, userService *user.UserService) *ServantService{
+func NewServantService(repo ServantRepository, userService *user.UserService, alertService *alert.AlertService) *ServantService{
 	return &ServantService{
 		servantRepo: repo,
 		userService: userService,
+		alertService: alertService,
 	}
 }

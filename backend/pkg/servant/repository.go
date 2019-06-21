@@ -6,4 +6,7 @@ type ServantRepository interface {
 	UpdateSendAlert(servant Servant) error
 	IsServantExists(servant Servant) (bool, error)
 	UpdateServant(servant Servant) error
+	InsertClient(client Client) error
+	UpdateClient(client string) error
+	getPotentialClients() ([]Client, error)
 }

@@ -14,10 +14,10 @@ type UserRoute struct {
 func (h *UserRoute) BuildRoutes(router *gin.RouterGroup) {
 	group := router.Group("/v1/user")
 	{
-		group.POST("/save", h.SaveUser)
+		group.POST("/Save", h.SaveUser)
+		group.POST("/getUsers", h.getUsers)
 	}
 }
-
 
 func (h *UserRoute) SaveUser(c *gin.Context) {
 	var usuario user.User
@@ -28,6 +28,20 @@ func (h *UserRoute) SaveUser(c *gin.Context) {
 			return
 		}
 		c.JSON(http.StatusOK, messages.UserRegistered)
+	} else {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+}
+
+func (h *UserRoute) getUsers(c *gin.Context) {
+	var usuario user.User
+	if err := c.ShouldBind(&usuario); err == nil {
+		users, err := h.userService.FindUser(usuario)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, err.Error())
+			return
+		}
+		c.JSON(http.StatusOK, users)
 	} else {
 		c.JSON(http.StatusInternalServerError, err.Error())
 	}

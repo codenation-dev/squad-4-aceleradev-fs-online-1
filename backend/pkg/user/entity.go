@@ -9,6 +9,7 @@ type User struct {
 	Email string `json:"email"`
 	Password string `json:"password"`
 	ReceiveAlert int `json:"receive_alert"`
+	IsAdmin int `json:"is_admin"`
 }
 
 type Credentials struct {

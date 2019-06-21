@@ -16,6 +16,8 @@ type Service interface {
 	SignIn(credentials Credentials) (string, error)
 	ValidateUsername(username string) error
 	SaveUser(*User) error
+	FindUserToAlert() ([]User, error)
+	FindUser(user User) ([]User, error)
 }
 
 type UserService struct {
@@ -121,8 +123,12 @@ func ValidatePassword(password string) error {
 	return errors.New(messages.ErrInvalidPassword)
 }
 
-func (r *UserService) FindUserToAlert() ([]string, error) {
-	return r.UserRepo.FindUserToAlert()
+func (s *UserService) FindUserToAlert() ([]User, error) {
+	return s.UserRepo.FindUserToAlert()
+}
+
+func (s *UserService) FindUser(user User) ([]User, error) {
+	return s.UserRepo.FindUser(user)
 }
 
 

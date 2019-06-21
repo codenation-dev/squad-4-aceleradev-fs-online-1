@@ -6,3 +6,8 @@ type Servant struct {
 	Orgao string
 	Salario float64
 }
+
+type Client struct{
+	Nome string
+	isPotentialClient int
+}

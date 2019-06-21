@@ -30,6 +30,72 @@ func (r *ServantSqliteRepo) InsertServant(servant Servant) error {
 	return nil
 }
 
+func (r *ServantSqliteRepo) InsertClient(client Client) error {
+	sqlServant := "INSERT INTO client (name, isPotentialClient) VALUES ($1, $2) ON CONFLICT (name) DO UPDATE SET isPotentialClient = 0"
+
+	statement, err := r.db.Prepare(sqlServant)
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	_, err = statement.Exec(client.Nome, client.isPotentialClient)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ServantSqliteRepo) getPotentialClients() ([]Client, error){
+	sqlStatement := "SELECT name, isPotentialClient FROM client WHERE isPotentialClient = 0"
+
+	statement, err := r.db.Prepare(sqlStatement)
+	if err != nil {
+		return  nil, err
+	}
+	defer statement.Close()
+
+	rows, err := statement.Query()
+	if err != nil {
+		return nil,  err
+	}
+
+	clients := make([]Client, 0)
+	for rows.Next() {
+		client := Client{}
+		err = rows.Scan(&client.Nome, &client.isPotentialClient)
+		if err != nil {
+			return nil,  err
+		}
+		clients = append(clients, client)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return clients, nil
+}
+
+func (r *ServantSqliteRepo) UpdateClient(client string) error{
+	sqlStatement := "UPDATE client set isPotentialClient = 1 WHERE name = $1"
+
+	statement, err := r.db.Prepare(sqlStatement)
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	_, err = statement.Exec(client)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
 func (r *ServantSqliteRepo) IsServantExists(servant Servant) (bool, error) {
 	sqlStatement := "SELECT * FROM servant WHERE nome = $1 AND cargo = $2 AND orgao = $3"
 
