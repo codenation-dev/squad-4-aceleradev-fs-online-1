@@ -10,6 +10,66 @@ type Service struct {
 	mock.Mock
 }
 
+// FindUser provides a mock function with given fields: _a0
+func (_m *Service) FindUser(_a0 user.User) ([]user.User, error) {
+	ret := _m.Called(_a0)
+
+	var r0 []user.User
+	if rf, ok := ret.Get(0).(func(user.User) []user.User); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]user.User)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(user.User) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// FindUserToAlert provides a mock function with given fields:
+func (_m *Service) FindUserToAlert() ([]user.User, error) {
+	ret := _m.Called()
+
+	var r0 []user.User
+	if rf, ok := ret.Get(0).(func() []user.User); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]user.User)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// SaveUser provides a mock function with given fields: _a0
+func (_m *Service) SaveUser(_a0 *user.User) error {
+	ret := _m.Called(_a0)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*user.User) error); ok {
+		r0 = rf(_a0)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // SignIn provides a mock function with given fields: credentials
 func (_m *Service) SignIn(credentials user.Credentials) (string, error) {
 	ret := _m.Called(credentials)
@@ -29,4 +89,18 @@ func (_m *Service) SignIn(credentials user.Credentials) (string, error) {
 	}
 
 	return r0, r1
+}
+
+// ValidateUsername provides a mock function with given fields: username
+func (_m *Service) ValidateUsername(username string) error {
+	ret := _m.Called(username)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string) error); ok {
+		r0 = rf(username)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
 }

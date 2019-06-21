@@ -33,6 +33,52 @@ func (_m *Repository) FindByUsername(email string) (*user.User, error) {
 	return r0, r1
 }
 
+// FindUser provides a mock function with given fields: _a0
+func (_m *Repository) FindUser(_a0 user.User) ([]user.User, error) {
+	ret := _m.Called(_a0)
+
+	var r0 []user.User
+	if rf, ok := ret.Get(0).(func(user.User) []user.User); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]user.User)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(user.User) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// FindUserToAlert provides a mock function with given fields:
+func (_m *Repository) FindUserToAlert() ([]user.User, error) {
+	ret := _m.Called()
+
+	var r0 []user.User
+	if rf, ok := ret.Get(0).(func() []user.User); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]user.User)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Save provides a mock function with given fields: usuario
 func (_m *Repository) Save(usuario *user.User) error {
 	ret := _m.Called(usuario)
