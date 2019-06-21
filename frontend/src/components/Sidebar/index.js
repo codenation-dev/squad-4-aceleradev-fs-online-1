@@ -31,18 +31,23 @@ const Sidebar = () => (
             aria-label="Toggle navigation"
           >
             {' '}
-            <i className="fa fa-history fa-lg" /> Histórico{' '}
+            <i className="fa fa-bell fa-lg" /> Alertas{' '}
             <i className="float-right fa fa-caret-down" />
           </li>
           <div className="collapse" id="navbarToggleExternalContent">
             <div className="bg-dark-blue">
               <ul>
-                <li className="list-group-item list-group-item-action bg-dark-blue">
-                  <i className="fa fa-envelope fa-lg" /> Emails
-                </li>
-                <li className="list-group-item list-group-item-action bg-dark-blue">
-                  <i className="fa fa-bell fa-lg" /> Alertas
-                </li>
+                <Link to="/alerts">
+                  <li className="list-group-item list-group-item-action bg-dark-blue">
+                    <i className="fa fa-exclamation-circle fa-lg" /> Meus alertas
+                  </li>
+                </Link>
+
+                <Link to="/history/alerts">
+                  <li className="list-group-item list-group-item-action bg-dark-blue">
+                    <i className="fa fa-history fa-lg" /> Histórico
+                  </li>
+                </Link>
               </ul>
             </div>
           </div>
@@ -51,6 +56,9 @@ const Sidebar = () => (
               <i className="fa fa-upload" /> Importar arquivo
             </li>
           </Link>
+          <li className="list-group-item list-group-item-action bg-dark-blue">
+            <i className="fa fa-lock fa-lg" /> Administrativo
+          </li>
 
           <li className="list-group-item list-group-item-action bg-dark-blue">
             <i className="fa fa-sign-out fa-lg" /> Sair
