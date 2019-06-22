@@ -8,17 +8,18 @@ import UploadFile from './pages/UploadFile';
 import AlertDetails from './pages/AlertDetails';
 import MyAlerts from './pages/MyAlerts';
 import Administrative from './pages/Administrative';
+import PrivateRoute from './components/Route/PrivateRoute'
 
 const Routes = () => (
   <BrowserRouter>
     <Switch>
-      <Route path="/" exact component={Dashboard} />
+      <PrivateRoute path="/" exact component={Dashboard} />
       <Route path="/user/login" exact component={UserLogin} />
       <Route path="/user/register" exact component={UserRegister} />
-      <Route path="/upload" component={UploadFile} />
-      <Route path="/history/alerts" exact component={AlertDetails} />
-      <Route path="/alerts" exact component={MyAlerts} />
-      <Route path="/user/administrative" exact component={Administrative} />
+      <PrivateRoute path="/upload" component={UploadFile} />
+      <PrivateRoute path="/history/alerts" exact component={AlertDetails} />
+      <PrivateRoute path="/alerts" exact component={MyAlerts} />
+      <PrivateRoute path="/user/administrative" exact component={Administrative} />
     </Switch>
   </BrowserRouter>
 );

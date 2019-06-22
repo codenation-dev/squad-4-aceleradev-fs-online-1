@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Container } from './styles';
 import logo from '../../assets/logo190x33.svg';
+import { logout, getUser } from '../../services/loginService';
 
 const Sidebar = () => (
   <Container>
@@ -14,7 +15,7 @@ const Sidebar = () => (
       <div className="list-group list-group-flush">
         <ul>
           <li className="greeting-item list-group-item list-group-item-action bg-dark-blue">
-            <i className="fa fa-user-circle fa-lg" /> Olá, Henrique
+            <i className="fa fa-user-circle fa-lg" /> Olá, {getUser()}
           </li>
           <Link to="/">
             <li className="list-group-item list-group-item-action bg-dark-blue">
@@ -61,10 +62,11 @@ const Sidebar = () => (
               <i className="fa fa-lock fa-lg" /> Administrativo
             </li>
           </Link>
-
-          <li className="list-group-item list-group-item-action bg-dark-blue">
-            <i className="fa fa-sign-out fa-lg" /> Sair
-          </li>
+          <Link to="/user/login" onClick={logout}>
+            <li className="list-group-item list-group-item-action bg-dark-blue">
+              <i className="fa fa-sign-out fa-lg" /> Sair
+            </li>
+          </Link>
         </ul>
       </div>
     </div>
