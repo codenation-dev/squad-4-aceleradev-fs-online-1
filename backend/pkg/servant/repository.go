@@ -9,4 +9,6 @@ type ServantRepository interface {
 	InsertClient(client Client) error
 	UpdateClient(client string) error
 	getPotentialClients() ([]Client, error)
+	CountPotentialClients() (int, error)
+	CountClients() (int, error)
 }

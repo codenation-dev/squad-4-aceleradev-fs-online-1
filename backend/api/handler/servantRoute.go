@@ -15,6 +15,8 @@ func (h *ServantRoute) BuildRoutes(router *gin.RouterGroup) {
 	group := router.Group("/v1/servant")
 	{
 		group.POST("/import", h.importCsvServidores)
+		group.GET("/countpotentialclients", h.countPotentialClients)
+		group.GET("/countclients", h.countClients)
 	}
 }
 
@@ -39,6 +41,24 @@ func (h *ServantRoute) importCsvServidores(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
+}
+
+func (h *ServantRoute) countPotentialClients(c *gin.Context) {
+	count, err := h.service.CountPotentialClients()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, count)
+}
+
+func (h *ServantRoute) countClients(c *gin.Context) {
+	count, err := h.service.CountClients()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, count)
 }
 
 func NewServantRoute(service *servant.ServantService) *ServantRoute {

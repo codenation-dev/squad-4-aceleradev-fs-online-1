@@ -31,6 +31,36 @@ func(r *AlertSqliteRepo) SaveAlert(alert Alert) error {
 	return nil
 }
 
+func (r * AlertSqliteRepo) CountAlerts() (int, error) {
+	sqlStatement := "SELECT COUNT(*) FROM alert"
+
+	statement, err := r.db.Prepare(sqlStatement)
+	if err != nil {
+		return 0, err
+	}
+	defer statement.Close()
+
+	rows, err := statement.Query()
+	if err != nil {
+		return 0, err
+	}
+
+	var count int
+	for rows.Next() {
+		err = rows.Scan(&count)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
 func (r *AlertSqliteRepo) FindAlerts(alert Alert) ([]Alert, error) {
 	sqlStatement := "SELECT id, username, useremail, clientname, clientsalary, sendDate FROM alert WHERE 1 = 1"
 

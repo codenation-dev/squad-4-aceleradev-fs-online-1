@@ -183,3 +183,63 @@ func (r *ServantSqliteRepo) UpdateServant(servant Servant) error{
 
 	return nil
 }
+
+func (r * ServantSqliteRepo) CountPotentialClients() (int, error) {
+	sqlStatement := "SELECT COUNT(*) FROM servant WHERE sentalert = 1"
+
+	statement, err := r.db.Prepare(sqlStatement)
+	if err != nil {
+		return 0, err
+	}
+	defer statement.Close()
+
+	rows, err := statement.Query()
+	if err != nil {
+		return 0, err
+	}
+
+	var count int
+	for rows.Next() {
+		err = rows.Scan(&count)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
+func (r * ServantSqliteRepo) CountClients() (int, error) {
+	sqlStatement := "SELECT COUNT(*) FROM client"
+
+	statement, err := r.db.Prepare(sqlStatement)
+	if err != nil {
+		return 0, err
+	}
+	defer statement.Close()
+
+	rows, err := statement.Query()
+	if err != nil {
+		return 0, err
+	}
+
+	var count int
+	for rows.Next() {
+		err = rows.Scan(&count)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}

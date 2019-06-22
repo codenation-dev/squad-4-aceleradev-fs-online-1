@@ -26,7 +26,7 @@ func InitializeDB() (*sql.DB, error){
 }
 
 func createDataBase(db *sql.DB) error {
-	query, err := ioutil.ReadFile("./cmd/app/database.sql")
+	query, err := ioutil.ReadFile("./app/database.sql")
 	if err != nil {
 		return err
 	}

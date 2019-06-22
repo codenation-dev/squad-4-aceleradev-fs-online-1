@@ -3,6 +3,7 @@ package alert
 type Service interface {
 	FindAlerts(alert Alert) ([]Alert, error)
 	SaveAlerts(alerts []Alert) error
+	CountAlerts() (int, error)
 }
 
 type AlertService struct {
@@ -24,4 +25,8 @@ func (s *AlertService) SaveAlerts(alerts []Alert) error {
 
 func (s *AlertService) FindAlerts(alert Alert) ([]Alert, error) {
 	return s.repo.FindAlerts(alert)
+}
+
+func (s *AlertService) CountAlerts() (int, error) {
+	return s.repo.CountAlerts()
 }

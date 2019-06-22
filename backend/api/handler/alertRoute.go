@@ -14,6 +14,7 @@ func (h *AlertRoute) BuildRoutes(router *gin.RouterGroup) {
 	group := router.Group("/v1/alert")
 	{
 		group.POST("/getAlerts", h.getAlerts)
+		group.GET("/count", h.countAlerts)
 	}
 }
 
@@ -30,6 +31,15 @@ func (h *AlertRoute) getAlerts(c *gin.Context) {
 	} else {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 	}
+}
+
+func (h *AlertRoute) countAlerts(c *gin.Context) {
+	count, err := h.alertService.CountAlerts()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, count)
 }
 
 func NewAlertRoute(alertService alert.Service) *AlertRoute {

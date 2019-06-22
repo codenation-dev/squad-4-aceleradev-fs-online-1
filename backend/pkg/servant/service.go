@@ -22,6 +22,8 @@ import (
 type Service interface {
 	ImportarCsvServidores() error
 	VerifyPotentialClients() error
+	CountPotentialClients() (int, error)
+	CountClients() (int, error)
 }
 
 type ServantService struct {
@@ -34,7 +36,7 @@ const notifySalary = 20000.00
 
 func (s *ServantService) createImportCsvWorker(id int, names <-chan string, results chan <- Servant, wg *sync.WaitGroup) {
 	for name := range names {
-		servants, err := getClientInformations(name)
+		servants, err := GetClientInformations(name)
 		if err != nil {
 			log.Fatal(err)
 			return
@@ -140,7 +142,7 @@ func (s *ServantService) doSearchClients (clients []Client) error {
 	return nil
 }
 
-func getClientInformations(name string) ([]Servant, error) {
+func GetClientInformations(name string) ([]Servant, error) {
 
 	Results := make([]Servant, 0)
 	var domHtml string
@@ -252,6 +254,14 @@ func (s *ServantService) sendNotifications(salary float64) error {
 
 	return nil
 
+}
+
+func (s *ServantService) CountPotentialClients() (int, error) {
+	return s.servantRepo.CountPotentialClients()
+}
+
+func (s *ServantService) CountClients() (int, error) {
+	return s.servantRepo.CountClients()
 }
 
 func NewServantService(repo ServantRepository, userService *user.UserService, alertService *alert.AlertService) *ServantService{
