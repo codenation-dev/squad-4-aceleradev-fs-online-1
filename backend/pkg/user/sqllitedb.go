@@ -60,6 +60,17 @@ func (r *SqliteRepo) Update(usuario *User) error {
 	return nil
 }
 
+func (r *SqliteRepo) UpdateReceiveAlert(receiveAlert int, username string) error {
+	sqlUser := "UPDATE user set receivealert = $1 WHERE username = $2"
+
+	_, err := r.db.Exec(sqlUser, receiveAlert, username)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *SqliteRepo) FindUserToAlert() ([]User, error) {
 	sqlUser := "SELECT username, email FROM user WHERE receivealert= 1"
 

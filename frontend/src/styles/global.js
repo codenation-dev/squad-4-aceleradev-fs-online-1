@@ -20,6 +20,19 @@ const GlobalStyle = createGlobalStyle`
   .main-content{
     min-height: 87vh;
   }
+  .error-message {
+    background-color: #ff7272;
+    color: white;
+    padding: 1em;
+    font-weight: bold;
+  }
+  .success-message {
+    background-color:#FF8700;
+    color: white;
+    padding: 1em;
+    font-weight: bold;
+  }
+  .hidden { display:none; }
 `;
 
 export default GlobalStyle;

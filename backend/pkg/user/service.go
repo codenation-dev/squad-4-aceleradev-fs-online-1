@@ -19,6 +19,7 @@ type Service interface {
 	SaveUser(*User) error
 	FindUserToAlert() ([]User, error)
 	FindUser(user User) ([]User, error)
+	UpdateReceiveAlert(users []User) error
 }
 
 type UserService struct {
@@ -134,6 +135,16 @@ func (s *UserService) FindUserToAlert() ([]User, error) {
 
 func (s *UserService) FindUser(user User) ([]User, error) {
 	return s.UserRepo.FindUser(user)
+}
+
+func (s *UserService) UpdateReceiveAlert(users []User) error {
+	for _, user := range users {
+		err := s.UserRepo.UpdateReceiveAlert(user.ReceiveAlert, user.Username)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 

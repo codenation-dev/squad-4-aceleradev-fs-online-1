@@ -4,24 +4,58 @@ import { Container } from './styles';
 
 import Sidebar from '../../components/Sidebar';
 import Navbar from '../../components/Navbar';
+import { getUsers, updateReceiveAlert } from '../../services/userService';
+import MessageComponent from '../../components/message/index'
 
 export default class Administrative extends Component {
   state = {
     checkedItems: new Map(),
+    users: [],
+    message: '',
+    messageClass: 'hidden',
   };
+
+  componentDidMount() {
+    getUsers().then((response) => {
+      this.setState({ users: response.data });
+      response.data.map((user) => {
+          this.setState(prevState => ({
+            checkedItems: prevState.checkedItems.set(
+              user.username, user.receive_alert,
+            ),
+          }));
+      });
+    }).catch((error) => {
+      this.setState({ message: 'Erro ao buscar os usuários', messageClass: 'error-message' });
+    });
+  }
 
   handleChange = (e) => {
     const item = e.target.value;
     const isChecked = e.target.checked;
-    this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
+    this.setState(prevState => ({
+      checkedItems: prevState.checkedItems.set(item, isChecked ? 1 : 0),
+    }));
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state);
+    let users = [];
+    const { checkedItems } = this.state;
+    for (const entry of checkedItems.entries()) {
+      let user = {username: entry[0], receive_alert: entry[1]}
+      users.push(user)
+    }
+    updateReceiveAlert(users).then((response) => {
+      this.setState({ message: 'Atualização realizada com sucesso', messageClass: 'success-message'});
+    }).catch((error) => {
+      this.setState({ message: 'Ocorreu um erro ao atualizar os usuários', messageClass: 'error-message' });
+    });
   };
 
   render() {
+    const { users } = this.state;
+
     return (
       <Container>
         <div className="d-flex" id="wrapper">
@@ -30,6 +64,8 @@ export default class Administrative extends Component {
             <Navbar />
             <div className="container-fluid">
               <div className="card main-content mt-4 p-4 ">
+              <MessageComponent text = {this.state.message} classe = {this.state.messageClass}/>
+              <br/>
                 <div className="row justify-content-between mr-5 ml-5 mb-2">
                   <h3>Gerenciar alertas</h3>
                 </div>
@@ -65,36 +101,23 @@ export default class Administrative extends Component {
                             />
                           </div>
                           <ul className="user-list ">
-                            <li>
-                              <div className="form-check">
-                                <input
-                                  onChange={this.handleChange}
-                                  checked={this.state.checkedItems.get('hick_97@hotmail.com')}
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  value="hick_97@hotmail.com"
-                                  id="defaultCheck1"
-                                />
-                                <label className="form-check-label" htmlFor="defaultCheck1">
-                                  <b>Henrique Augusto</b> (hick_97@hotmail.com)
-                                </label>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="form-check">
-                                <input
-                                  onChange={this.handleChange}
-                                  checked={this.state.checkedItems.get('hick_g@hotmail.com')}
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  value="hick_g@hotmail.com"
-                                  id="defaultCheck1"
-                                />
-                                <label className="form-check-label" htmlFor="defaultCheck1">
-                                  <b>Henrique Augusto</b> (hick_97@hotmail.com)
-                                </label>
-                              </div>
-                            </li>
+                            {users.map(user => (
+                              <li key={user.username}>
+                                <div className="form-check">
+                                  <input
+                                    onChange={this.handleChange}
+                                    checked={this.state.checkedItems.get(user.username)}
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value={user.username}
+                                    id="defaultCheck1"
+                                  />
+                                  <label className="form-check-label" htmlFor="defaultCheck1">
+                                    <b>{user.nome}</b> ({user.email})
+                                  </label>
+                                </div>
+                              </li>
+                            ))}
                           </ul>
                         </div>
                         <div className="modal-header justify-content-center">

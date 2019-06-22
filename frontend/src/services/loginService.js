@@ -1,10 +1,9 @@
 import { localStorageWrapper } from '../helpers';
-
-const axios = require('axios');
+import api from './serviceApi';
 
 const NS_LOGGED_USER = 'logged_user';
 const NS_TOKEN = 'token';
-const LOGIN_PATH = 'http://localhost:8080/banco-uati/v1/login';
+const LOGIN_PATH = '/banco-uati/v1/login';
 
 export const setUserToLocalStorage = ({ username }) => {
   const user = {
@@ -25,7 +24,7 @@ export const doLogin = async (email, password) => {
     email: `${email}`,
     password: `${password}`,
   });
-  const result = await axios.post(`${LOGIN_PATH}/signin`, signinRequest, header);
+  const result = await api.post(`${LOGIN_PATH}/signin`, signinRequest, header);
   if (result.status === 200) {
     localStorageWrapper.set(NS_LOGGED_USER, result.data.username);
     localStorageWrapper.set(NS_TOKEN, result.data.token);
@@ -40,7 +39,7 @@ export const register = async (username, nome, email, password) => {
     email: `${email}`,
     password: `${password}`,
   });
-  await axios.post(`${LOGIN_PATH}/save`, registerRequest, header);
+  await api.post(`${LOGIN_PATH}/save`, registerRequest, header);
 };
 
 export const isLogged = () => !!localStorageWrapper.get(NS_LOGGED_USER);
@@ -51,6 +50,7 @@ export const logout = () => {
 };
 
 export const getUser = () => isLogged && localStorageWrapper.get(NS_LOGGED_USER);
+export const getToken = () => isLogged && localStorageWrapper.get(NS_TOKEN);
 
 export default {
   setUserToLocalStorage,

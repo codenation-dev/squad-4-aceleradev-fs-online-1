@@ -14,7 +14,7 @@ func TokenAuthMIddleware() gin.HandlerFunc {
 			c.Next()
 			return
 		}
-		tokenCookie := c.GetHeader("token")
+		tokenCookie := c.GetHeader("Authorization")
 		if tokenCookie == "" {
 			c.JSON(http.StatusUnauthorized, "Not Allowed")
 			c.Abort()
