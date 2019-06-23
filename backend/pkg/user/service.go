@@ -57,7 +57,7 @@ func (s *UserService) SignIn(credentials Credentials) (*LoginResponse, error) {
 		return nil, err
 	}
 
-	response := &LoginResponse{Username: user.Nome, Jwt: tokenString}
+	response := &LoginResponse{Username: user.Username, Jwt: tokenString, Name: user.Nome}
 	return response, nil
 }
 
