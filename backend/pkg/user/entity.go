@@ -27,4 +27,5 @@ type Claims struct {
 type LoginResponse struct {
 	Username 	string `json:"username"`
 	Jwt 		string `json:"token"`
+	Name 	string `json:"name"`
 }

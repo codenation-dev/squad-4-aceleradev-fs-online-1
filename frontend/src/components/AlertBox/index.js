@@ -1,27 +1,33 @@
-import React from 'react';
+import React from "react";
 
-import { AlertContainer } from './styles';
+import { AlertContainer } from "./styles";
 
 const AlertBox = ({
-  data, hour, userDestination, emailDestination, clientName,
+  date,
+  hour,
+  userDestination,
+  emailDestination,
+  clientName
 }) => (
   <AlertContainer>
     <div className=" alert alert-primary" role="alert">
-      Novo alerta emitido para <b>Francisco Vieira</b>. Detectamos <b>Henrique Augusto</b> como um
-      potencial cliente!
+      Novo alerta emitido para <b>{userDestination}</b>. Detectamos{" "}
+      <b>{clientName}</b> como um potencial cliente!
       <div className="collapse" id="alert1">
         <ul>
           <li className="list-group-item list-group-item-action ">
-            <i className="fa fa-calendar-o" /> <b>Data:</b> 01/10/2019
+            <i className="fa fa-calendar-o" /> <b>Data:</b> {date}
           </li>
           <li className="list-group-item list-group-item-action ">
-            <i className="fa fa-clock-o" /> <b>Hora:</b> 10:28:34
+            <i className="fa fa-clock-o" /> <b>Hora:</b> {hour}
           </li>
           <li className="list-group-item list-group-item-action ">
-            <i className="fa fa-user" /> <b>Alerta emitido para:</b> Henrique Augusto
+            <i className="fa fa-user" /> <b>Alerta emitido para:</b>{" "}
+            {userDestination}
           </li>
           <li className="list-group-item list-group-item-action ">
-            <i className="fa fa-at" /> <b>Email do usuário:</b> hick_97@hotmail.com
+            <i className="fa fa-at" /> <b>Email do usuário:</b>{" "}
+            {emailDestination}
           </li>
         </ul>
       </div>
