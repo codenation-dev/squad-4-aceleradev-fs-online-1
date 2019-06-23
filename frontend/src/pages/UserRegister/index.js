@@ -28,11 +28,17 @@ export default class Register extends Component {
     const {
       username, name, email, password,
     } = this.state;
-    register(username, name, email, password).then((response) => {
-      this.props.history.push('/user/login');
-    }).catch((error) => {
-      alert('Ocorreu um erro ao cadastrar o usuário');
-    });
+    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
+
+    if (strongRegex.test(password)){
+      register(username, name, email, password).then((response) => {
+        this.props.history.push('/user/login');
+      }).catch((error) => {
+        alert('Ocorreu um erro ao cadastrar o usuário');
+      });
+    } else {
+      alert('Sua senha deve ter ao menos um caracter maiúsculo, um caracter minúsculo, um número, um caracter especial e 6 caracteres.');
+    }
   }
 
   render() {
@@ -49,6 +55,7 @@ export default class Register extends Component {
             value={name}
             placeholder="Nome completo"
             onChange={this.handleInputChange}
+            required
           />
           <input
             type="text"
@@ -56,6 +63,7 @@ export default class Register extends Component {
             value={username}
             placeholder="Apelido"
             onChange={this.handleInputChange}
+            required
           />
           <input
             type="email"
@@ -63,6 +71,7 @@ export default class Register extends Component {
             value={email}
             placeholder="Email"
             onChange={this.handleInputChange}
+            required
           />
           <input
             type="password"
@@ -70,6 +79,7 @@ export default class Register extends Component {
             value={password}
             placeholder="Senha"
             onChange={this.handleInputChange}
+            required
           />
 
           <button type="submit">CADASTRAR</button>
