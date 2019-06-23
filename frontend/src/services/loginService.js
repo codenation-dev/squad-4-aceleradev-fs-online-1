@@ -62,7 +62,7 @@ export const logout = () => {
   localStorageWrapper.set(NS_TOKEN, null);
 };
 export const getPermission = () =>
-  isLogged && localStorageWrapper.get(NS_LOGGED_USER_EMAIL);
+  isLogged && localStorageWrapper.get(NS_LOGGED_USER_PERMISSION);
 export const getMail = () =>
   isLogged && localStorageWrapper.get(NS_LOGGED_USER_EMAIL);
 export const getUser = () =>
