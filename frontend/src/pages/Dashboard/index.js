@@ -49,8 +49,10 @@ class Dashboard extends Component {
       response.data.map((data) => {
         this.state.salary_chart_data.set(data.faixa, data.count)
       });
+      this.setState({dataDidLoaded: true})
+    }).catch((error) => {
+      console.log(error)
     });
-    this.setState({dataDidLoaded: true})
   }
 
   render() {
