@@ -11,4 +11,5 @@ type ServantRepository interface {
 	getPotentialClients() ([]Client, error)
 	CountPotentialClients() (int, error)
 	CountClients() (int, error)
+	GetServantsSalary() ([]GroupServantSalary, error)
 }

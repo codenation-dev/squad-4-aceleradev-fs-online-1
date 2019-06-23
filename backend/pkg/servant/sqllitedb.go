@@ -214,7 +214,7 @@ func (r * ServantSqliteRepo) CountPotentialClients() (int, error) {
 	return count, nil
 }
 
-func (r * ServantSqliteRepo) CountClients() (int, error) {
+func (r *ServantSqliteRepo) CountClients() (int, error) {
 	sqlStatement := "SELECT COUNT(*) FROM client"
 
 	statement, err := r.db.Prepare(sqlStatement)
@@ -242,4 +242,36 @@ func (r * ServantSqliteRepo) CountClients() (int, error) {
 	}
 
 	return count, nil
+}
+
+func (r *ServantSqliteRepo) GetServantsSalary() ([]GroupServantSalary, error) {
+	sqlStatement := "SELECT count(salario), salario FROM 'servant' GROUP BY salario"
+
+	statement, err := r.db.Prepare(sqlStatement)
+	if err != nil {
+		return nil, err
+	}
+	defer statement.Close()
+
+	rows, err := statement.Query()
+	if err != nil {
+		return nil, err
+	}
+
+	servantsSalary := make([]GroupServantSalary, 0)
+	for rows.Next() {
+		var servant GroupServantSalary
+		err = rows.Scan(&servant.Count, &servant.Salary)
+		if err != nil {
+			return nil, err
+		}
+		servantsSalary = append(servantsSalary, servant)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return servantsSalary, nil
 }

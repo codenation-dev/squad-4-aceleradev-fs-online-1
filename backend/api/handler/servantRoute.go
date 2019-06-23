@@ -17,6 +17,7 @@ func (h *ServantRoute) BuildRoutes(router *gin.RouterGroup) {
 		group.POST("/import", h.importCsvServidores)
 		group.GET("/countpotentialclients", h.countPotentialClients)
 		group.GET("/countclients", h.countClients)
+		group.GET("/getsalaryschartdata", h.getSalaryChartData)
 	}
 }
 
@@ -59,6 +60,18 @@ func (h *ServantRoute) countClients(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, count)
+}
+
+func (h *ServantRoute) getSalaryChartData(c *gin.Context) {
+	data, err := h.service.GetSalaryChartData()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	if err != nil {
+		fmt.Println(err)
+	}
+	c.JSON(http.StatusOK, data)
 }
 
 func NewServantRoute(service *servant.ServantService) *ServantRoute {

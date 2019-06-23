@@ -24,6 +24,7 @@ type Service interface {
 	VerifyPotentialClients() error
 	CountPotentialClients() (int, error)
 	CountClients() (int, error)
+	GetSalaryChartData() ([]SalaryChartResponse, error)
 }
 
 type ServantService struct {
@@ -262,6 +263,51 @@ func (s *ServantService) CountPotentialClients() (int, error) {
 
 func (s *ServantService) CountClients() (int, error) {
 	return s.servantRepo.CountClients()
+}
+
+func (s *ServantService) GetSalaryChartData() ([]SalaryChartResponse, error) {
+	groupsalarys, err := s.servantRepo.GetServantsSalary()
+	if err != nil {
+		return nil, err
+	}
+
+	salaryChartData := make(map[string]int)
+	salaryChartData["2500"] = 0
+	salaryChartData["5000"] = 0
+	salaryChartData["7500"] = 0
+	salaryChartData["10000"] = 0
+	salaryChartData["12500"] = 0
+	salaryChartData["15000"] = 0
+	salaryChartData["20000"] = 0
+	salaryChartData["20001"] = 0
+
+	for _, gs := range groupsalarys {
+		if gs.Salary < 2500 {
+			salaryChartData["2500"] = salaryChartData["2500"] + gs.Count
+		} else if gs.Salary < 5000 {
+			salaryChartData["5000"] = salaryChartData["5000"] + gs.Count
+		} else if gs.Salary < 7500 {
+			salaryChartData["7500"] = salaryChartData["7500"] + gs.Count
+		} else if gs.Salary < 10000 {
+			salaryChartData["10000"] = salaryChartData["10000"] + gs.Count
+		} else if gs.Salary < 12500 {
+			salaryChartData["12500"] = salaryChartData["12500"] + gs.Count
+		} else if gs.Salary < 15000 {
+			salaryChartData["15000"] = salaryChartData["15000"] + gs.Count
+		} else if gs.Salary < 20000 {
+			salaryChartData["20000"] = salaryChartData["20000"] + gs.Count
+		} else {
+			salaryChartData["20001"] = salaryChartData["20001"] + gs.Count
+		}
+	}
+
+	data := make([]SalaryChartResponse, 0)
+	for chave, valor := range salaryChartData {
+		d := SalaryChartResponse{Faixa:chave, Count:valor}
+		data = append(data, d)
+	}
+
+	return data, nil
 }
 
 func NewServantService(repo ServantRepository, userService *user.UserService, alertService *alert.AlertService) *ServantService{
