@@ -35,7 +35,7 @@ type ServantService struct {
 
 const notifySalary = 20000.00
 
-func (s *ServantService) createImportCsvWorker(id int, names <-chan string, results chan <- Servant, wg *sync.WaitGroup) {
+func (s *ServantService) createImportCsvWorker(id int, names <-chan string, wg *sync.WaitGroup) {
 	for name := range names {
 		servants, err := GetClientInformations(name)
 		if err != nil {
@@ -43,7 +43,18 @@ func (s *ServantService) createImportCsvWorker(id int, names <-chan string, resu
 			return
 		}
 		for _, servant := range servants {
-			results <- servant
+			err := s.servantRepo.InsertServant(servant)
+			if err != nil {
+				log.Fatal(err)
+				return
+			}
+			if servant.Salario >= notifySalary {
+				err = s.servantRepo.UpdateClient(servant.Nome)
+				if err != nil {
+					log.Fatal(err)
+					return
+				}
+			}
 		}
 		wg.Done()
 	}
@@ -106,11 +117,10 @@ func (s *ServantService) VerifyPotentialClients() {
 func (s *ServantService) doSearchClients (clients []Client) error {
 
 	jobs := make(chan string, 5)
-	servants := make(chan Servant, 20000)
 	var wg sync.WaitGroup
 
-	for w := 1; w <= 10; w++ {
-		go s.createImportCsvWorker(w, jobs, servants, &wg)
+	for w := 1; w <= 5; w++ {
+		go s.createImportCsvWorker(w, jobs, &wg)
 	}
 
 	for _, client := range clients {
@@ -120,20 +130,6 @@ func (s *ServantService) doSearchClients (clients []Client) error {
 
 	wg.Wait()
 	close(jobs)
-	close(servants)
-	for servant := range servants {
-
-		err := s.servantRepo.InsertServant(servant)
-		if err != nil {
-			return err
-		}
-		if servant.Salario >= notifySalary {
-			err = s.servantRepo.UpdateClient(servant.Nome)
-			if err != nil {
-				return err
-			}
-		}
-	}
 
 	err := s.sendNotifications(notifySalary)
 	if err != nil {
@@ -226,6 +222,7 @@ func (s *ServantService) sendNotifications(salary float64) error {
 
 	emails := make([]string, 0)
 	alerts := make([]alert.Alert, 0)
+	clients := make([]string, 0)
 	now := time.Now()
 	nowString := now.Format("02-01-2006 15:04:05")
 	for _, servant := range servants {
@@ -243,10 +240,11 @@ func (s *ServantService) sendNotifications(salary float64) error {
 				SendDate: nowString,
 			}
 			alerts = append(alerts, alert)
+			clients = append(clients, servant.Nome)
 		}
 	}
 
-	err = email.SendEmail(emails)
+	err = email.SendEmail(emails, clients)
 	if err != nil {
 		return err
 	}

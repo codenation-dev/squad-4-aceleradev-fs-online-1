@@ -4,3 +4,4 @@ const ErrInvalidPassword = "The password should at least have 6 letters, at leas
 const ErrInvalidEmail = "The email is not valid"
 const UserRegistered = "User successfully registered"
 const EmailSubjet = "Alerta de potenciais novos clientes"
+const EmailBody = "Boa noite  "

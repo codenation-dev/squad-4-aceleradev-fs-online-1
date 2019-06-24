@@ -7,6 +7,7 @@ import (
 	"github.com/codenation-dev/squad-4-aceleradev-fs-online-1/backend/pkg/servant"
 	"github.com/codenation-dev/squad-4-aceleradev-fs-online-1/backend/pkg/user"
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron"
 	"log"
 	"os"
 )
@@ -44,9 +45,9 @@ func Init() {
 	servantRoute.BuildRoutes(mainRouter)
 	alertRoute.BuildRoutes(mainRouter)
 
-	/*crono := cron.New()
-	crono.AddFunc("@every 5m", servantService.VerifyPotentialClients)
-	crono.Start()*/
+	crono := cron.New()
+	crono.AddFunc("@every 24h", servantService.VerifyPotentialClients)
+	crono.Start()
 
 	err = r.Run(env.AppBaseUrl())
 	if err != nil {

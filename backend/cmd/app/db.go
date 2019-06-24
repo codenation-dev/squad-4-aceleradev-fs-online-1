@@ -10,6 +10,7 @@ import (
 
 func InitializeDB() (*sql.DB, error){
 	db, err := sql.Open("sqlite3", env.SqlLitePathUrl())
+	db.SetMaxOpenConns(1);
 	if err != nil{
 		return nil, err
 	}

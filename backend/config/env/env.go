@@ -8,7 +8,7 @@ import (
 
 var properties = []*Property{
 	{Key:"SQLITE_FILE_PATH", FallBackValue:"./sqlite.db"},
-	{Key:"APP_BASE_URL", FallBackValue:"127.0.0.1:8080"},
+	{Key:"APP_BASE_URL", FallBackValue:"0.0.0.0:8080"},
 	{Key:"APP_EMAIL_SENDER", FallBackValue:"codenation.squad3@gmail.com"},
 	{Key:"APP_EMAIL_PASSWORD", FallBackValue:"a142536*"},
 	{Key:"APP_EMAIL_PASSWORD", FallBackValue:"a142536*"},
