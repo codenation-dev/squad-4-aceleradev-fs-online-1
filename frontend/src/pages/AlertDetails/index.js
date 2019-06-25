@@ -14,7 +14,7 @@ export default class AlertDetails extends Component {
   };
 
   async componentDidMount() {
-    const result = await getHistory;
+    const result = await getHistory();
 
     this.setState({
       alerts: result.data,
