@@ -1,15 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { Container } from "./styles";
-import logo from "../../assets/logo190x33.svg";
-import { logout, getUser, getPermission } from "../../services/loginService";
+import { Container } from './styles';
+import logo from '../../assets/logo190x33.svg';
+import { logout, getUser, getPermission } from '../../services/loginService';
 
 const Sidebar = () => (
   <Container>
     <div className="border-right" id="sidebar-wrapper">
       <div className="sidebar-heading">
-        {" "}
+        {' '}
         <img src={logo} alt="Logo Banco Uati" />
       </div>
       <div className="list-group list-group-flush">
@@ -31,8 +31,8 @@ const Sidebar = () => (
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            {" "}
-            <i className="fa fa-bell fa-lg" /> Alertas{" "}
+            {' '}
+            <i className="fa fa-bell fa-lg" /> Alertas{' '}
             <i className="float-right fa fa-caret-down" />
           </li>
           <div className="collapse" id="navbarToggleExternalContent">
@@ -40,8 +40,7 @@ const Sidebar = () => (
               <ul>
                 <Link to="/alerts">
                   <li className="list-group-item list-group-item-action bg-dark-blue">
-                    <i className="fa fa-exclamation-circle fa-lg" /> Meus
-                    alertas
+                    <i className="fa fa-exclamation-circle fa-lg" /> Meus alertas
                   </li>
                 </Link>
 
@@ -58,9 +57,8 @@ const Sidebar = () => (
               <i className="fa fa-upload" /> Importar arquivo
             </li>
           </Link>
-          {getPermission ? (
+          {getPermission() ? (
             <Link to="/user/administrative">
-              {console.log(getPermission)}
               <li className="list-group-item list-group-item-action bg-dark-blue">
                 <i className="fa fa-lock fa-lg" /> Administrativo
               </li>

@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Container } from "./styles";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Container } from './styles';
 
-import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
-import AlertBox from "../../components/AlertBox";
-import { MessageComponent } from "../../components/message";
+import Sidebar from '../../components/Sidebar';
+import Navbar from '../../components/Navbar';
+import AlertBox from '../../components/AlertBox';
+import { MessageComponent } from '../../components/message';
 
-import alertsService from "../../services/alertsService";
-import { getMail } from "../../services/loginService";
+import { getAlertsByUser } from '../../services/alertsServices';
+import { getMail } from '../../services/loginService';
 
 export default class MyAlerts extends Component {
   state = {
-    alerts: []
+    alerts: [],
   };
 
   async componentDidMount() {
-    const result = await alertsService.getAlertsByUser(getMail());
+    const result = await getAlertsByUser(getMail());
 
     this.setState({
-      alerts: result
+      alerts: result,
     });
   }
 
@@ -45,10 +45,7 @@ export default class MyAlerts extends Component {
                     aria-labelledby="exampleModalScrollableTitle"
                     aria-hidden="true"
                   >
-                    <div
-                      className="modal-dialog modal-dialog-scrollable"
-                      role="document"
-                    >
+                    <div className="modal-dialog modal-dialog-scrollable" role="document">
                       <div className="modal-content">
                         <div className="modal-header">
                           <button
@@ -72,8 +69,8 @@ export default class MyAlerts extends Component {
                             alerts.map(alert => (
                               <AlertBox
                                 key={alert.id}
-                                date={alert.send_date.split(" ")[0]}
-                                hour={alert.send_date.split(" ")[1]}
+                                date={alert.send_date.split(' ')[0]}
+                                hour={alert.send_date.split(' ')[1]}
                                 clientName={alert.client_name}
                                 emailDestination={alert.user_email}
                                 userDestination={alert.user_name}

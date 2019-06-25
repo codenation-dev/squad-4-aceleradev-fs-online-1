@@ -78,7 +78,7 @@ export default class UploadFile extends Component {
                 </div>
                 <div className="row justify-content-between mr-5 ml-5">
                   <UploadBox>
-                    <Dropzone accept=".csv" onDrop={this.onDrop}>
+                    <Dropzone accept=".csv,text/csv" onDrop={this.onDrop}>
                       {({
                         getRootProps, getInputProps, isDragActive, isDragReject,
                       }) => (

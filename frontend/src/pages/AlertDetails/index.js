@@ -1,45 +1,45 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
-import AlertBox from "../../components/AlertBox";
-import alertsService from "../../services/alertsService";
+import Sidebar from '../../components/Sidebar';
+import Navbar from '../../components/Navbar';
+import AlertBox from '../../components/AlertBox';
+import { getHistory } from '../../services/alertsServices';
 
-import { Container } from "./styles";
+import { Container } from './styles';
 
 export default class AlertDetails extends Component {
   state = {
     alerts: [],
-    filteredAlerts: []
+    filteredAlerts: [],
   };
 
   async componentDidMount() {
-    const result = await alertsService.getHistory();
+    const result = await getHistory;
 
     this.setState({
       alerts: result.data,
-      filteredAlerts: result.data
+      filteredAlerts: result.data,
     });
   }
 
-  handleFilter = async keySearch => {
+  handleFilter = async (keySearch) => {
     const result = await this.filterAlerts(keySearch);
 
     this.setState({
-      filteredAlerts: result
+      filteredAlerts: result,
     });
   };
 
-  filterAlerts = keySearch => {
+  filterAlerts = (keySearch) => {
     const { alerts } = this.state;
     const ks = keySearch.toLowerCase();
 
-    const result = alerts.filter(item => {
+    const result = alerts.filter((item) => {
       const { client_name, user_name, user_email } = item;
       return (
-        client_name.toLowerCase().search(ks) !== -1 ||
-        user_name.toLowerCase().search(ks) !== -1 ||
-        user_email.toLowerCase().search(ks) !== -1
+        client_name.toLowerCase().search(ks) !== -1
+        || user_name.toLowerCase().search(ks) !== -1
+        || user_email.toLowerCase().search(ks) !== -1
       );
     });
 
@@ -68,16 +68,10 @@ export default class AlertDetails extends Component {
                     aria-labelledby="exampleModalScrollableTitle"
                     aria-hidden="true"
                   >
-                    <div
-                      className="modal-dialog modal-dialog-scrollable"
-                      role="document"
-                    >
+                    <div className="modal-dialog modal-dialog-scrollable" role="document">
                       <div className="modal-content">
                         <div className="modal-header">
-                          <label
-                            className="sr-only"
-                            htmlFor="inlineFormInputGroup"
-                          >
+                          <label className="sr-only" htmlFor="inlineFormInputGroup">
                             Pesquisar
                           </label>
                           <div className="input-group ">
@@ -109,15 +103,15 @@ export default class AlertDetails extends Component {
 
                           {filteredAlerts.length > 0
                             ? filteredAlerts.map(alert => (
-                                <AlertBox
-                                  key={alert.id}
-                                  date={alert.send_date.split(" ")[0]}
-                                  hour={alert.send_date.split(" ")[1]}
-                                  clientName={alert.client_name}
-                                  emailDestination={alert.user_email}
-                                  userDestination={alert.user_name}
-                                />
-                              ))
+                              <AlertBox
+                                key={alert.id}
+                                date={alert.send_date.split(' ')[0]}
+                                hour={alert.send_date.split(' ')[1]}
+                                clientName={alert.client_name}
+                                emailDestination={alert.user_email}
+                                userDestination={alert.user_name}
+                              />
+                            ))
                             : null}
                         </div>
                       </div>

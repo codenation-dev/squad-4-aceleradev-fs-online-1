@@ -53,6 +53,8 @@ export default class Administrative extends Component {
     });
   };
 
+  
+
   render() {
     const { users } = this.state;
 
@@ -84,22 +86,6 @@ export default class Administrative extends Component {
                           <h5>Selecione os usuários que serão notificados:</h5>
                         </div>
                         <div className="modal-body">
-                          <label className="sr-only" htmlFor="inlineFormInputGroup">
-                            Pesquisar
-                          </label>
-                          <div className="input-group ">
-                            <div className="input-group-prepend">
-                              <div className="input-group-text">
-                                <i className="fa fa-search" />
-                              </div>
-                            </div>
-                            <input
-                              type="search"
-                              className="form-control"
-                              id="inlineFormInputGroup"
-                              placeholder="Pesquisar"
-                            />
-                          </div>
                           <ul className="user-list ">
                             {users.map(user => (
                               <li key={user.username}>
