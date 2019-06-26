@@ -42,7 +42,7 @@ func (r *SqliteRepo) Save(usuario *User) error {
 		return err
 	}
 
-	_, err = statement.Exec(usuario.Username, usuario.Password, usuario.Email, usuario.Nome, 1, 1)
+	_, err = statement.Exec(usuario.Username, usuario.Password, usuario.Email, usuario.Nome, 1, 0)
 	if err != nil {
 		return err
 	}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Container } from './styles';
 import logo from '../../assets/logo190x33.svg';
-import { logout, getUserName   } from '../../services/loginService';
+import { logout, getUserName, getPermission } from '../../services/loginService';
 
 const Sidebar = () => (
   <Container>
@@ -57,11 +57,14 @@ const Sidebar = () => (
               <i className="fa fa-upload" /> Importar arquivo
             </li>
           </Link>
+          {getPermission() ? (
             <Link to="/user/administrative">
+              {console.log(getPermission)}
               <li className="list-group-item list-group-item-action bg-dark-blue">
                 <i className="fa fa-lock fa-lg" /> Administrativo
               </li>
             </Link>
+          ) : null}
           <Link to="/user/login" onClick={logout}>
             <li className="list-group-item list-group-item-action bg-dark-blue">
               <i className="fa fa-sign-out fa-lg" /> Sair
