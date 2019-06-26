@@ -10,6 +10,29 @@ type Repository struct {
 	mock.Mock
 }
 
+// FindByEmail provides a mock function with given fields: email
+func (_m *Repository) FindByEmail(email string) (*user.User, error) {
+	ret := _m.Called(email)
+
+	var r0 *user.User
+	if rf, ok := ret.Get(0).(func(string) *user.User); ok {
+		r0 = rf(email)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*user.User)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(string) error); ok {
+		r1 = rf(email)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // FindByUsername provides a mock function with given fields: email
 func (_m *Repository) FindByUsername(email string) (*user.User, error) {
 	ret := _m.Called(email)
@@ -100,6 +123,20 @@ func (_m *Repository) Update(usuario *user.User) error {
 	var r0 error
 	if rf, ok := ret.Get(0).(func(*user.User) error); ok {
 		r0 = rf(usuario)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// UpdateReceiveAlert provides a mock function with given fields: receiveAlert, username
+func (_m *Repository) UpdateReceiveAlert(receiveAlert int, username string) error {
+	ret := _m.Called(receiveAlert, username)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int, string) error); ok {
+		r0 = rf(receiveAlert, username)
 	} else {
 		r0 = ret.Error(0)
 	}

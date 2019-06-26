@@ -10,6 +10,48 @@ type ServantRepository struct {
 	mock.Mock
 }
 
+// CountClients provides a mock function with given fields:
+func (_m *ServantRepository) CountClients() (int, error) {
+	ret := _m.Called()
+
+	var r0 int
+	if rf, ok := ret.Get(0).(func() int); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(int)
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// CountPotentialClients provides a mock function with given fields:
+func (_m *ServantRepository) CountPotentialClients() (int, error) {
+	ret := _m.Called()
+
+	var r0 int
+	if rf, ok := ret.Get(0).(func() int); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(int)
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // FindServantBySalary provides a mock function with given fields: salary
 func (_m *ServantRepository) FindServantBySalary(salary float64) ([]servant.Servant, error) {
 	ret := _m.Called(salary)
@@ -26,6 +68,29 @@ func (_m *ServantRepository) FindServantBySalary(salary float64) ([]servant.Serv
 	var r1 error
 	if rf, ok := ret.Get(1).(func(float64) error); ok {
 		r1 = rf(salary)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetServantsSalary provides a mock function with given fields:
+func (_m *ServantRepository) GetServantsSalary() ([]servant.GroupServantSalary, error) {
+	ret := _m.Called()
+
+	var r0 []servant.GroupServantSalary
+	if rf, ok := ret.Get(0).(func() []servant.GroupServantSalary); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]servant.GroupServantSalary)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
 	} else {
 		r1 = ret.Error(1)
 	}

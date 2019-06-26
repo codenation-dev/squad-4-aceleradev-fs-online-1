@@ -7,6 +7,6 @@ import (
 )
 
 func TestSendEmail(t *testing.T) {
-	err := email.SendEmail([]string{"rkorpalski@gmail.com"})
+	err := email.SendEmail([]string{"admin@admin.com"}, []string{"Alberto Santos"})
 	assert.NoError(t, err)
 }

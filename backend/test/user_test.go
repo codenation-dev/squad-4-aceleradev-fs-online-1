@@ -10,26 +10,26 @@ import (
 )
 
 func TestSignIn(t *testing.T) {
-	usuarioMock := &user.User{Username:"admin", Password: "d42f0e5b5ae41ad2d552008ba647fbff63f66b18"}
+	usuarioMock := &user.User{Email:"admin@admin.com", Password: "d42f0e5b5ae41ad2d552008ba647fbff63f66b18"}
 
 	dbMock := mocks.Repository{}
-	dbMock.On("FindByUsername", "admin").Return(usuarioMock, nil)
+	dbMock.On("FindByEmail", "admin@admin.com").Return(usuarioMock, nil)
 
 	userService := user.NewUserService(&dbMock)
-	token, err := userService.SignIn(user.Credentials{Username:"admin", Password: "A1234*"})
+	token, err := userService.SignIn(user.Credentials{Email:"admin@admin.com", Password: "A1234*"})
 
 	assert.NoError(t, err)
 	assert.NotNil(t, token)
 }
 
 func TestSignInNotAuthorized(t *testing.T) {
-	usuarioMock := &user.User{Username:"admin", Password: "d42f0e5b5ae41ad2d552008ba647fbff63f66"}
+	usuarioMock := &user.User{Email:"admin@admin.com", Password: "d42f0e5b5ae41ad2d552008ba647fbff63f66"}
 
 	dbMock := mocks.Repository{}
-	dbMock.On("FindByUsername", "admin").Return(usuarioMock, nil)
+	dbMock.On("FindByEmail", "admin@admin.com").Return(usuarioMock, nil)
 
 	userService := user.NewUserService(&dbMock)
-	token, err := userService.SignIn(user.Credentials{Username:"admin", Password: "A1234*"})
+	token, err := userService.SignIn(user.Credentials{Email:"admin@admin.com", Password: "A1234*"})
 
 	assert.Errorf(t, err, "Not Authorized")
 	assert.Empty(t, token)

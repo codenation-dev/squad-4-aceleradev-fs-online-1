@@ -71,14 +71,16 @@ func (_m *Service) SaveUser(_a0 *user.User) error {
 }
 
 // SignIn provides a mock function with given fields: credentials
-func (_m *Service) SignIn(credentials user.Credentials) (string, error) {
+func (_m *Service) SignIn(credentials user.Credentials) (*user.LoginResponse, error) {
 	ret := _m.Called(credentials)
 
-	var r0 string
-	if rf, ok := ret.Get(0).(func(user.Credentials) string); ok {
+	var r0 *user.LoginResponse
+	if rf, ok := ret.Get(0).(func(user.Credentials) *user.LoginResponse); ok {
 		r0 = rf(credentials)
 	} else {
-		r0 = ret.Get(0).(string)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*user.LoginResponse)
+		}
 	}
 
 	var r1 error
@@ -89,6 +91,20 @@ func (_m *Service) SignIn(credentials user.Credentials) (string, error) {
 	}
 
 	return r0, r1
+}
+
+// UpdateReceiveAlert provides a mock function with given fields: users
+func (_m *Service) UpdateReceiveAlert(users []user.User) error {
+	ret := _m.Called(users)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func([]user.User) error); ok {
+		r0 = rf(users)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
 }
 
 // ValidateUsername provides a mock function with given fields: username
