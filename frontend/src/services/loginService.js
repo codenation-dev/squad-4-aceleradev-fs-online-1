@@ -64,6 +64,7 @@ export const logout = () => {
 export const getPermission = () => isLogged && localStorageWrapper.get(NS_LOGGED_USER_PERMISSION);
 export const getMail = () => isLogged && localStorageWrapper.get(NS_LOGGED_USER_EMAIL);
 export const getUser = () => isLogged && localStorageWrapper.get(NS_LOGGED_USER);
+export const getUserName = () => isLogged && localStorageWrapper.get(NS_LOGGED_USER_NAME);
 export const getToken = () => isLogged && localStorageWrapper.get(NS_TOKEN);
 
 export default {

@@ -240,8 +240,8 @@ func (s *ServantService) sendNotifications(salary float64) error {
 				SendDate: nowString,
 			}
 			alerts = append(alerts, alert)
-			clients = append(clients, servant.Nome)
 		}
+		clients = append(clients, servant.Nome)
 	}
 
 	err = email.SendEmail(emails, clients)
